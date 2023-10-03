@@ -123,3 +123,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'core.CustomUser'
+
+LOGIN_REDIRECT_URL = '/login/'  # Reemplaza '/perfil/' con la URL a la que deseas redirigir al usuario
+LOGOUT_REDIRECT_URL = '/login/'  # Reemplaza '/logout-success/' con la URL de tu elección
+
