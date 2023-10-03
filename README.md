@@ -14,13 +14,14 @@ Antes de comenzar, asegúrate de tener instalado Python y pip en tu sistema.
 git clone https://github.com/Proyecto-Semestral-duoc/componente-total
 ```
 2. Navega al directorio del proyecto:
-
+```bash
 cd componente-total
-
+```
 3. Instala las dependencias utilizando pip y el archivo requirements.txt:
 
+```bash
 pip install -r requirements.txt
-
+```
 # Contribuciones
 Si deseas contribuir a este proyecto, sigue los siguientes pasos:
 
