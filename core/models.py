@@ -87,12 +87,26 @@ def crear_productos_de_prueba(sender, **kwargs):
 
     
 
+
+class Region(models.Model):
+    nombre = models.CharField(max_length=255, default='No seleccionado')
+
+    def __str__(self):
+        return self.nombre
+
+class Comuna(models.Model):
+    nombre = models.CharField(max_length=255, default='No seleccionado')
+    region = models.ForeignKey(Region, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.nombre
+
 class Factura(models.Model):
     numero_factura = models.CharField(max_length=20, unique=True)
     fecha = models.DateField()
     valor = models.DecimalField(max_digits=10, decimal_places=2)
     direccion = models.CharField(max_length=255)
-    
+    telefono = models.CharField(max_length=15, blank=True)  # Campo para el teléfono
     ESTADO_DESPACHO_CHOICES = (
         ('rechazado', 'Rechazado'),
         ('pendiente', 'Pendiente'),
@@ -107,29 +121,55 @@ class Factura(models.Model):
     # Relaciones
     usuario = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     productos = models.ManyToManyField(Producto)
+    comuna = models.OneToOneField(Comuna, on_delete=models.CASCADE, null=True)
+
 
     def __str__(self):
         return self.numero_factura
     
-@receiver(post_migrate)
-def crear_facturas_de_ejemplo(sender, **kwargs):
-    if sender.name == 'core':  # Reemplaza 'mi_app' con el nombre de tu aplicación
-        if not CustomUser.objects.filter(username='admin').exists():
-            admin_user = CustomUser.objects.create_superuser(username='admin', password='123')
-            productos_de_prueba = list(Producto.objects.all())  # Convierte la lista de productos en una lista de objetos Producto
+# <<<<<<< Updated upstream
+# @receiver(post_migrate)
+# def crear_facturas_de_ejemplo(sender, **kwargs):
+#     if sender.name == 'core':  # Reemplaza 'mi_app' con el nombre de tu aplicación
+#         if not CustomUser.objects.filter(username='admin').exists():
+#             admin_user = CustomUser.objects.create_superuser(username='admin', password='123')
+#             productos_de_prueba = list(Producto.objects.all())  # Convierte la lista de productos en una lista de objetos Producto
 
-            # Crear facturas de ejemplo
-            for i in range(5):  # Crear 5 facturas de ejemplo
-                factura = Factura(
-                    numero_factura=f'FAC-{i+1}',
-                    fecha='2023-10-03',  # Reemplaza con la fecha deseada
-                    valor=sum(random.choice(productos_de_prueba).precio for _ in range(random.randint(1, 5))),  # Valor aleatorio basado en productos
-                    direccion='Dirección de ejemplo',
-                    usuario=admin_user,
-                    estado_despacho=random.choice(['rechazado', 'pendiente', 'despachado']),
-                )
-                factura.save()
-                factura.productos.set(random.sample(productos_de_prueba, random.randint(1, 5)))  # Productos aleatorios
-                print("Base de datos Lista")
-        else:
-            print("Base de datos ya rellenada")
+#             # Crear facturas de ejemplo
+#             for i in range(5):  # Crear 5 facturas de ejemplo
+#                 factura = Factura(
+#                     numero_factura=f'FAC-{i+1}',
+#                     fecha='2023-10-03',  # Reemplaza con la fecha deseada
+#                     valor=sum(random.choice(productos_de_prueba).precio for _ in range(random.randint(1, 5))),  # Valor aleatorio basado en productos
+#                     direccion='Dirección de ejemplo',
+#                     usuario=admin_user,
+#                     estado_despacho=random.choice(['rechazado', 'pendiente', 'despachado']),
+#                 )
+#                 factura.save()
+#                 factura.productos.set(random.sample(productos_de_prueba, random.randint(1, 5)))  # Productos aleatorios
+#                 print("Base de datos Lista")
+#         else:
+#             print("Base de datos ya rellenada")
+# =======
+class OrdenCompra(models.Model):
+    numero_factura = models.CharField(max_length=20, unique=True)
+    fecha = models.DateField()
+    valor = models.DecimalField(max_digits=10, decimal_places=2)
+    direccion = models.CharField(max_length=255)
+    telefono = models.CharField(max_length=15)
+    ESTADO_ORDEN_CHOICES = (
+        ('rechazado', 'Rechazado'),
+        ('pendiente', 'Pendiente'),
+        ('aprobado', 'Aprobado'),
+    )
+    estado_orden = models.CharField(
+        max_length=20,
+        choices=ESTADO_ORDEN_CHOICES,
+        default='pendiente',
+    )
+
+    # Relaciones
+    comuna = models.OneToOneField(Comuna, on_delete=models.CASCADE, null=True)
+
+    def __str__(self):
+        return self.numero_factura
