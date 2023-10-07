@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tienda de Componentes Electrónicos</title>
+    <!-- Agrega tus enlaces a hojas de estilo CSS aquí utilizando-->
+</head>
+<body>
+    <header>
+        <h1>Bienvenido a la Tienda de Componentes Electrónicos</h1>
+    </header>
+
+    <section class="productos">
+        <h2>Productos Destacados</h2>
+        <div class="producto">
+            <img src="{% static 'img/producto1.jpg' %}" alt="Componente 1">
+            <h3>Componente 1</h3>
+            <p>Descripción del Componente 1. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            <p>Precio: $XX.XX</p>
+            <button>Agregar al Carrito</button>
+        </div>
+
+        <div class="producto">
+            <img src="{% static 'img/producto2.jpg' %}" alt="Componente 2">
+            <h3>Componente 2</h3>
+            <p>Descripción del Componente 2. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            <p>Precio: $XX.XX</p>
+            <button>Agregar al Carrito</button>
+        </div>
+
+        <!-- Agrega más productos aquí -->
+    </section>
+
+    <!-- Agrega más secciones de contenido según sea necesario -->
+
+    <footer>
+        <p>&copy; 2023 Tienda de Componentes Electrónicos</p>
+    </footer>
+</body>
+</html>
+{% endblock %}

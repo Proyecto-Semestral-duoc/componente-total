@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -117,6 +118,12 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+# Define la ubicación de tus archivos estáticos (debe coincidir con tu estructura de directorios)
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
+# Habilita la recopilación de archivos estáticos en producción
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
@@ -124,6 +131,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'core.CustomUser'
 
-LOGIN_REDIRECT_URL = '/login/'  # Reemplaza '/perfil/' con la URL a la que deseas redirigir al usuario
+LOGIN_REDIRECT_URL = '/'  # Reemplaza '/perfil/' con la URL a la que deseas redirigir al usuario
 LOGOUT_REDIRECT_URL = '/login/'  # Reemplaza '/logout-success/' con la URL de tu elección
 

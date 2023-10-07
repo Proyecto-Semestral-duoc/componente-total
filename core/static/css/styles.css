@@ -1,0 +1,16 @@
+.list{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    border-radius: 0 16px 16px 0;
+    background: #ff1515
+}
+
+.list__item{
+    list-style: none;
+    width: 100%;
+    text-align: center;
+}
+
