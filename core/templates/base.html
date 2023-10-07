@@ -1,3 +1,4 @@
+{% load static%}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,14 +7,31 @@
     <title>{% block title %}Mi Sitio Web{% endblock %}</title>
     <!-- Incluir los archivos CSS de Bootstrap -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Incluir los archivos CSS de la carpeta static -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <!-- Incluye los archivos CSS de Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Incluye los archivos JavaScript de Bootstrap (jQuery y Popper.js) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <body>
     <!-- Barra de navegación -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Mi Sitio Web</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+        <!-- Menú lateral (izquierdo) -->
+        <div class="dropdown">
+            <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-bars"></i> Menú
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="{% url 'orden_compra' %}">Orden de Compra</a>
+                <!-- Agrega más elementos de menú aquí si es necesario -->
+            </div>
+        </div>
+    <!-- Fin del menú lateral (izquierdo) -->
+        <a class="navbar-brand" href="#">Componente Total</a>
+
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
@@ -25,15 +43,19 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/contact/">Contacto</a>
                 </li>
-                <!-- Agregar más elementos de menú según tu necesidad -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">Iniciar Sesión</a>
+                </li>
                 {% if user.is_authenticated %}
                 <li class="nav-item">
-                <a class="nav-link" href="{% url 'logout' %}">Cerrar Sesión</a>
+                    <a class="nav-link" href="{% url 'logout' %}">Cerrar Sesión</a>
                 </li>
                 {% endif %}
             </ul>
         </div>
     </nav>
+
+
 
     <!-- Contenido principal -->
     <div class="container mt-5">
@@ -41,9 +63,12 @@
         {% endblock %}
     </div>
 
+    
+
     <!-- Incluir los archivos JavaScript de Bootstrap (jQuery y Popper.js) -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="{% static 'js/script.js' %}"></script>
 </body>
 </html>
