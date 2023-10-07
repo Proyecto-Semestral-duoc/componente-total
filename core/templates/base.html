@@ -20,12 +20,15 @@
     <!-- Barra de navegación -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <!-- Menú lateral (izquierdo) -->
+        
         <div class="dropdown">
             <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-bars"></i> Menú
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                {% if user.is_authenticated %}
                 <a class="dropdown-item" href="{% url 'orden_compra' %}">Orden de Compra</a>
+                {% endif %}
                 <!-- Agrega más elementos de menú aquí si es necesario -->
             </div>
         </div>
