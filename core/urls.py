@@ -18,8 +18,13 @@ urlpatterns = [
     path('contact/', views.contact, name='contact'),
     # URL para listar las órdenes de compra
     path('orden_compra/', views.listar_ordenes_compra, name='orden_compra'),
+    path('carrito/', views.ver_carrito, name='ver_carrito'),
+    path('agregar_al_carrito/<int:producto_id>/', views.agregar_al_carrito, name='agregar_al_carrito'),
+    path('eliminar_item/<int:item_id>/', views.eliminar_item_del_carrito, name='eliminar_item'),
+    path('crear_orden/', views.crear_orden_compra, name='crear_orden'),
     # URL para visualizar facturas
     path('visualizar_factura/', views.visualizar_factura, name='visualizar_factura'),
+
 ]
 
 if settings.DEBUG:

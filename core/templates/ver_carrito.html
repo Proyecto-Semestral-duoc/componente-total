@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>Tu Carrito de Compras</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Producto</th>
+        <th>Cantidad</th>
+        <th>Precio Unitario</th>
+        <th>Subtotal</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in carrito_items %}
+        <tr>
+          <td>{{ item.producto.nombre }}</td>
+          <td>{{ item.cantidad }}</td>
+          <td>${{ item.producto.precio }}</td>
+          <td>${{ item.subtotal }}</td>
+          <td>
+            <a href="{% url 'eliminar_item' item_id=item.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+          </td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="5">Tu carrito está vacío.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <a href="#" class="btn btn-primary">Generar Orden</a>
+{% endblock %}
+

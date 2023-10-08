@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>Ingresar Orden de Compra</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Guardar Orden de Compra</button>
+  </form>
+
+  <!-- Tabla de Productos y Total -->
+  <h3>Productos en el Carrito</h3>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Producto</th>
+        <th>Cantidad</th>
+        <th>Precio Unitario</th>
+        <th>Subtotal</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in carrito_items %}
+        <tr>
+          <td>{{ item.producto.nombre }}</td>
+          <td>{{ item.cantidad }}</td>
+          <td>${{ item.producto.precio }}</td>
+          <td>${{ item.subtotal }}</td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="4">Tu carrito está vacío.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <h3>Total: ${{ total }}</h3>
+  
+{% endblock %}
