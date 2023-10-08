@@ -4,7 +4,8 @@ from django.conf.urls import include
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.views import LogoutView
 from . import views
-
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     # Otras URL de tu aplicación aquí...
@@ -20,3 +21,7 @@ urlpatterns = [
     # URL para visualizar facturas
     path('visualizar_factura/', views.visualizar_factura, name='visualizar_factura'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

@@ -13,21 +13,27 @@
     width: 100%;
     text-align: center;
 }
+.fondo{
+    background-image: url('/static/images/fondo.png'); /* Cambia 'ruta-de-tu-imagen.jpg' por la ruta de tu imagen */
+    background-size: cover; /* Ajusta la imagen para cubrir todo el fondo */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+}
+
 
 .navbar,
 .navbar-brand,
 .nav-link {
-    background-color: #2877c6 !important;
+    background-color: black !important;
     color: white !important;
     padding: 15px;
 }
 
 .nav-item:hover .nav-link {
-    color: #07032e !important; /* Cambiar el color de texto al pasar el mouse */
+    color: greenyellow !important; /* Cambiar el color de texto al pasar el mouse */
 }
 
 .btn {
-    background-color: #2877c6 !important;
+    background-color: black !important;
     color: white !important;
 }
 
@@ -39,11 +45,6 @@
 }
 
 /* Estilos generales */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-}
-
 .container {
     margin: 0 auto;
     background-color: #fff;
@@ -92,7 +93,7 @@ textarea {
 }
 
 button {
-    background-color: #007bff;
+    background-color: black;
     color: #fff;
     border: none;
     padding: 10px 20px;
@@ -101,7 +102,7 @@ button {
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: gray;
 }
 
 .pie-de-pagina {
@@ -109,7 +110,7 @@ button:hover {
     bottom: 0;
     left: 0;
     width: 100%;
-    background-color: #333;
+    background-color: black;
     color: #fff;
     padding: 10px;
     text-align: center;
