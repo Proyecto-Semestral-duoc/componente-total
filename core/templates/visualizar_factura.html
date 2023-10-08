@@ -5,7 +5,7 @@
 {% block content %}
 
 <div class="container mt-5">
-    <h1>Órdenes de Compra</h1>
+    <h1>Visualizar Facturas</h1>
     <br><br>
     <table class="table table-bordered">
         <thead>
@@ -15,18 +15,18 @@
                 <th>Valor</th>
                 <th>Dirección</th>
                 <th>Teléfono</th>
-                <th>Estado de Orden</th>
+                <th>Estado de Despacho</th>
             </tr>
         </thead>
         <tbody>
-            {% for orden in ordenes %}
+            {% for factura in facturas %}
                 <tr>
-                    <td>{{ orden.id_orden }}</td>
-                    <td>{{ orden.fecha }}</td>
-                    <td>{{ orden.valor }}</td>
-                    <td>{{ orden.direccion }}</td>
-                    <td>{{ orden.telefono }}</td>
-                    <td>{{ orden.get_estado_orden_display }}</td>
+                    <td>{{ factura.orden_compra.id_orden }}</td>
+                    <td>{{ factura.orden_compra.fecha }}</td>
+                    <td>{{ factura.orden_compra.valor }}</td>
+                    <td>{{ factura.orden_compra.direccion }}</td>
+                    <td>{{ factura.orden_compra.telefono }}</td>
+                    <td>{{ factura.get_estado_despacho_display }}</td>
                 </tr>
             {% endfor %}
         </tbody>
