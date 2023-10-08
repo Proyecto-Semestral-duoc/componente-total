@@ -92,3 +92,17 @@ body{
     padding: 0 35px 0 5px;
     color: #fff;
 }
+input:focus ~ label,
+input:valid ~ label{
+    top: -5px;
+}
+.input-box label{
+    position: absolute;
+    color: #fff;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-50%);
+    font-size: 16px;
+    pointer-events: none;
+    transform: .3s;
+}
