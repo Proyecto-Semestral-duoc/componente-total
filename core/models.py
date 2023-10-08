@@ -1,4 +1,5 @@
 from django.contrib.auth.models import AbstractUser
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.dispatch import receiver
 from django.db.models.signals import post_migrate
@@ -13,13 +14,12 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.username
-    
+
 
 
 
 def default_imagen_producto():
     return "productos/default.jpg"
-
 
 
 class Producto(models.Model):
@@ -31,6 +31,100 @@ class Producto(models.Model):
     def __str__(self):
         return self.nombre
     
+
+
+class Region(models.Model):
+    nombre = models.CharField(max_length=255, default='No seleccionado')
+
+    def __str__(self):
+        return self.nombre
+
+class Comuna(models.Model):
+    nombre = models.CharField(max_length=255, default='No seleccionado')
+    region = models.ForeignKey(Region, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.nombre
+
+class OrdenBase(models.Model):
+    id_orden = models.AutoField(primary_key=True)
+    fecha = models.DateField()
+    valor = models.DecimalField(max_digits=10, decimal_places=2)
+    direccion = models.CharField(max_length=255)
+    telefono = models.CharField(max_length=15)
+    comuna = models.ForeignKey(Comuna, on_delete=models.CASCADE, null=True)
+
+    class Meta:
+        abstract = True  # Esto hace que este modelo sea abstracto y no se cree una tabla en la base de datos
+
+class OrdenCompra(OrdenBase):
+    ESTADO_ORDEN_CHOICES = (
+        ('rechazado', 'Rechazado'),
+        ('pendiente', 'Pendiente'),
+        ('aprobado', 'Aprobado'),
+    )
+    estado_orden = models.CharField(
+        max_length=20,
+        choices=ESTADO_ORDEN_CHOICES,
+        default='pendiente',
+    )
+
+    usuario = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    productos = models.ManyToManyField(Producto)
+
+    def __str__(self):
+        return f'OrdenCompra #{self.id_orden}'
+
+
+
+# Modelo para Factura que también hereda de OrdenBase
+class Factura(models.Model):
+    orden_compra = models.ForeignKey(OrdenCompra, on_delete=models.CASCADE)  # Relación con OrdenCompra
+    ESTADO_DESPACHO_CHOICES = (
+        ('rechazado', 'Rechazado'),
+        ('pendiente', 'Pendiente'),
+        ('despachado', 'Despachado'),
+    )
+    estado_despacho = models.CharField(
+        max_length=20,
+        choices=ESTADO_DESPACHO_CHOICES,
+        default='pendiente',
+    )
+    def __str__(self):
+        return f'OrdenCompra #{self.orden_compra.id_orden}'
+
+
+# Define la función para crear el usuario admin
+def crear_usuario_admin(**kwargs):
+    if not CustomUser.objects.filter(username='admin').exists():
+        CustomUser.objects.create_superuser(username='admin', password='123', fecha_nacimiento='2013-03-03', direccion='dadsadsa')
+        print("Usuario administrador creado exitosamente.")
+
+# Registra la función con la señal post_migrate
+@receiver(post_migrate)
+def post_migrate_callback(sender, **kwargs):
+    crear_usuario_admin(**kwargs)
+    
+
+User = get_user_model()
+
+@receiver(post_migrate)
+def create_normal_user(sender, **kwargs):
+    try:
+        user = User.objects.get(username='cliente')
+    except User.DoesNotExist:
+        # Crea un usuario normal si no existe
+        user = User.objects.create_user(
+            username='cliente',
+            password='123',
+            fecha_nacimiento='2013-03-03',
+            direccion='dirección_normal'
+        )
+        print("Usuario normal creado exitosamente.")
+
+
+
+
 @receiver(post_migrate)
 def crear_productos_de_prueba(sender, **kwargs):
     if sender.name == 'core':  # Reemplaza 'mi_app' con el nombre de tu aplicación
@@ -83,93 +177,3 @@ def crear_productos_de_prueba(sender, **kwargs):
 
         for producto_data in productos_de_prueba:
             Producto.objects.get_or_create(**producto_data)
-
-
-    
-
-
-class Region(models.Model):
-    nombre = models.CharField(max_length=255, default='No seleccionado')
-
-    def __str__(self):
-        return self.nombre
-
-class Comuna(models.Model):
-    nombre = models.CharField(max_length=255, default='No seleccionado')
-    region = models.ForeignKey(Region, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.nombre
-
-class Factura(models.Model):
-    numero_factura = models.CharField(max_length=20, unique=True)
-    fecha = models.DateField()
-    valor = models.DecimalField(max_digits=10, decimal_places=2)
-    direccion = models.CharField(max_length=255)
-    telefono = models.CharField(max_length=15, blank=True)  # Campo para el teléfono
-    ESTADO_DESPACHO_CHOICES = (
-        ('rechazado', 'Rechazado'),
-        ('pendiente', 'Pendiente'),
-        ('despachado', 'Despachado'),
-    )
-    estado_despacho = models.CharField(
-        max_length=20,
-        choices=ESTADO_DESPACHO_CHOICES,
-        default='pendiente',
-    )
-
-    # Relaciones
-    usuario = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    productos = models.ManyToManyField(Producto)
-    comuna = models.OneToOneField(Comuna, on_delete=models.CASCADE, null=True)
-
-
-    def __str__(self):
-        return self.numero_factura
-    
-# <<<<<<< Updated upstream
-# @receiver(post_migrate)
-# def crear_facturas_de_ejemplo(sender, **kwargs):
-#     if sender.name == 'core':  # Reemplaza 'mi_app' con el nombre de tu aplicación
-#         if not CustomUser.objects.filter(username='admin').exists():
-#             admin_user = CustomUser.objects.create_superuser(username='admin', password='123')
-#             productos_de_prueba = list(Producto.objects.all())  # Convierte la lista de productos en una lista de objetos Producto
-
-#             # Crear facturas de ejemplo
-#             for i in range(5):  # Crear 5 facturas de ejemplo
-#                 factura = Factura(
-#                     numero_factura=f'FAC-{i+1}',
-#                     fecha='2023-10-03',  # Reemplaza con la fecha deseada
-#                     valor=sum(random.choice(productos_de_prueba).precio for _ in range(random.randint(1, 5))),  # Valor aleatorio basado en productos
-#                     direccion='Dirección de ejemplo',
-#                     usuario=admin_user,
-#                     estado_despacho=random.choice(['rechazado', 'pendiente', 'despachado']),
-#                 )
-#                 factura.save()
-#                 factura.productos.set(random.sample(productos_de_prueba, random.randint(1, 5)))  # Productos aleatorios
-#                 print("Base de datos Lista")
-#         else:
-#             print("Base de datos ya rellenada")
-# =======
-class OrdenCompra(models.Model):
-    numero_factura = models.CharField(max_length=20, unique=True)
-    fecha = models.DateField()
-    valor = models.DecimalField(max_digits=10, decimal_places=2)
-    direccion = models.CharField(max_length=255)
-    telefono = models.CharField(max_length=15)
-    ESTADO_ORDEN_CHOICES = (
-        ('rechazado', 'Rechazado'),
-        ('pendiente', 'Pendiente'),
-        ('aprobado', 'Aprobado'),
-    )
-    estado_orden = models.CharField(
-        max_length=20,
-        choices=ESTADO_ORDEN_CHOICES,
-        default='pendiente',
-    )
-
-    # Relaciones
-    comuna = models.OneToOneField(Comuna, on_delete=models.CASCADE, null=True)
-
-    def __str__(self):
-        return self.numero_factura
