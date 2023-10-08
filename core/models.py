@@ -1,4 +1,5 @@
 from django.contrib.auth.models import AbstractUser
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.dispatch import receiver
 from django.db.models.signals import post_migrate
@@ -103,8 +104,27 @@ def crear_usuario_admin(**kwargs):
 @receiver(post_migrate)
 def post_migrate_callback(sender, **kwargs):
     crear_usuario_admin(**kwargs)
-
     
+
+User = get_user_model()
+
+@receiver(post_migrate)
+def create_normal_user(sender, **kwargs):
+    try:
+        user = User.objects.get(username='cliente')
+    except User.DoesNotExist:
+        # Crea un usuario normal si no existe
+        user = User.objects.create_user(
+            username='cliente',
+            password='123',
+            fecha_nacimiento='2013-03-03',
+            direccion='dirección_normal'
+        )
+        print("Usuario normal creado exitosamente.")
+
+
+
+
 @receiver(post_migrate)
 def crear_productos_de_prueba(sender, **kwargs):
     if sender.name == 'core':  # Reemplaza 'mi_app' con el nombre de tu aplicación
