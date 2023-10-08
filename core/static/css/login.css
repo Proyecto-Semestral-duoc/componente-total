@@ -104,5 +104,5 @@ input:valid ~ label{
     transform: translateY(-50%);
     font-size: 16px;
     pointer-events: none;
-    transform: .3s;
+    transition: .3s
 }
