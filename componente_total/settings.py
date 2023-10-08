@@ -118,8 +118,6 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-# Define la ubicación de tus archivos estáticos (debe coincidir con tu estructura de directorios)
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 # Habilita la recopilación de archivos estáticos en producción
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
