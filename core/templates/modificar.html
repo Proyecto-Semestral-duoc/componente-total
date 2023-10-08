@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <h1>Órdenes de Compra</h1>
+    <br><br>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Número de Factura</th>
+                <th>Fecha</th>
+                <th>Valor</th>
+                <th>Dirección</th>
+                <th>Teléfono</th>
+                <th>Estado de Orden</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for orden in ordenes %}
+                <tr>
+                    <td>{{ orden.id_orden }}</td>
+                    <td>{{ orden.fecha }}</td>
+                    <td>{{ orden.valor }}</td>
+                    <td>{{ orden.direccion }}</td>
+                    <td>{{ orden.telefono }}</td>
+                    <td>{{ orden.get_estado_orden_display }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
