@@ -22,7 +22,11 @@ urlpatterns = [
     path('agregar_al_carrito/<int:producto_id>/', views.agregar_al_carrito, name='agregar_al_carrito'),
     path('eliminar_item/<int:item_id>/', views.eliminar_item_del_carrito, name='eliminar_item'),
     path('crear_orden/', views.crear_orden_compra, name='crear_orden'),
+    # URL para visualizar facturas
+    path('visualizar_factura/', views.visualizar_factura, name='visualizar_factura'),
+
 ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

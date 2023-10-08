@@ -8,11 +8,22 @@ from .forms import *
 # Asegúrate de importar tu modelo de OrdenCompra
 
 def listar_ordenes_compra(request):
-    # Recupera todas las órdenes de compra almacenadas en la base de datos
+    user = request.user
     ordenes = OrdenCompra.objects.all()
     
-    # Pasa las órdenes de compra al contexto para que estén disponibles en la plantilla
+    if not user.is_superuser:
+        ordenes = ordenes.filter(usuario=user)
+    
     return render(request, 'orden_compra.html', {'ordenes': ordenes})
+
+def visualizar_factura(request):
+    user = request.user
+    
+    facturas = Factura.objects.all()
+    if not user.is_superuser:
+        facturas = Factura.objects.filter(orden_compra__usuario=user)
+    
+    return render(request, 'visualizar_factura.html', {'facturas': facturas})
 
 def home(request):
     productos = Producto.objects.all()
