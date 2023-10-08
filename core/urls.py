@@ -13,6 +13,8 @@ urlpatterns = [
     # URL para la vista de inicio de sesión
     path('login/', LoginView.as_view(template_name='login.html'), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
+    path('about/', views.about, name='about'),
+    path('contact/', views.contact, name='contact'),
     # URL para listar las órdenes de compra
     path('orden_compra/', views.listar_ordenes_compra, name='orden_compra'),
 ]
