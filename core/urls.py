@@ -18,7 +18,10 @@ urlpatterns = [
     path('contact/', views.contact, name='contact'),
     # URL para listar las órdenes de compra
     path('orden_compra/', views.listar_ordenes_compra, name='orden_compra'),
+    # URL para visualizar facturas
+    path('visualizar_factura/', views.visualizar_factura, name='visualizar_factura'),
 ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
