@@ -1,48 +1,23 @@
 {% extends "base.html" %}
-
 {% load static %}
 
-
-
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Tienda de Componentes Electrónicos</title>
-    <!-- Agrega tus enlaces a hojas de estilo CSS aquí utilizando-->
-</head>
-<body>
-    <header>
-        <h1>Bienvenido a la Tienda de Componentes Electrónicos</h1>
-    </header>
-
-    <section class="productos">
-        <h2>Productos Destacados</h2>
-        <div class="producto">
-            <img src="{% static 'img/producto1.jpg' %}" alt="Componente 1">
-            <h3>Componente 1</h3>
-            <p>Descripción del Componente 1. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-            <p>Precio: $XX.XX</p>
-            <button>Agregar al Carrito</button>
+<section class="productos">
+    <h2>Productos Destacados</h2>
+    <div class="row">
+        {% for producto in productos %}
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <img src="{{ producto.imagen.url }}" class="card-img-top" alt="{{ producto.nombre }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ producto.nombre }}</h5>
+                    <p class="card-text">{{ producto.descripcion }}</p>
+                    <p class="card-text">Precio: ${{ producto.precio }}</p>
+                    <button class="btn btn-primary">Agregar al Carrito</button>
+                </div>
+            </div>
         </div>
-
-        <div class="producto">
-            <img src="{% static 'img/producto2.jpg' %}" alt="Componente 2">
-            <h3>Componente 2</h3>
-            <p>Descripción del Componente 2. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-            <p>Precio: $XX.XX</p>
-            <button>Agregar al Carrito</button>
-        </div>
-
-        <!-- Agrega más productos aquí -->
-    </section>
-
-    <!-- Agrega más secciones de contenido según sea necesario -->
-
-    <footer class="pie-de-pagina">
-        <p>&copy; 2023 Tienda de Componentes Electrónicos</p>
-    </footer>
-</body>
-</html>
+        {% endfor %}
+    </div>
+</section>
 {% endblock %}

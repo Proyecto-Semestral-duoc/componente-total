@@ -12,8 +12,8 @@ def listar_ordenes_compra(request):
     return render(request, 'orden_compra.html', {'ordenes': ordenes})
 
 def home(request):
-    # Puedes agregar lógica adicional aquí para obtener productos u otra información que desees mostrar en la página de inicio.
-    return render(request, 'home.html')
+    productos = Producto.objects.all()
+    return render(request, 'home.html', {'productos': productos})
 
 def about(request):
     return render(request, 'about.html')
