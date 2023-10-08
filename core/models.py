@@ -30,7 +30,18 @@ class Producto(models.Model):
 
     def __str__(self):
         return self.nombre
-    
+
+class CarritoItem(models.Model):
+    usuario = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    cantidad = models.PositiveIntegerField(default=1)
+    fecha_agregado = models.DateTimeField(auto_now_add=True)
+        
+    def subtotal(self):
+        return self.cantidad * self.producto.precio
+        
+    def __str__(self):
+        return f"{self.cantidad} x {self.producto.nombre} para {self.usuario.username}"
 
 
 class Region(models.Model):

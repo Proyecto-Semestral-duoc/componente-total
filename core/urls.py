@@ -4,7 +4,8 @@ from django.conf.urls import include
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.views import LogoutView
 from . import views
-
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     # Otras URL de tu aplicación aquí...
@@ -19,4 +20,5 @@ urlpatterns = [
     path('orden_compra/', views.listar_ordenes_compra, name='orden_compra'),
 ]
 
-    
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
