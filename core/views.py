@@ -3,6 +3,9 @@ from .models import *
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import *
+from django.http import JsonResponse
+from datetime import date
+
 # Create your views here.
 
 # Asegúrate de importar tu modelo de OrdenCompra
@@ -91,37 +94,65 @@ def eliminar_item_del_carrito(request, item_id):
     item.delete()
 
     # Redirige de nuevo a la página del carrito
-    return redirect('ver_carrito')  # Cambia 'ver_carrito' al nombre de la URL de tu vista de carrito
-
+    return redirect('ver_carrito') 
+ # Cambia 'ver_carrito' al nombre de la URL de tu vista de carrito
 def crear_orden_compra(request):
     if request.user.is_authenticated:
         carrito_items = CarritoItem.objects.filter(usuario=request.user)
     else:
         carrito_items = []
 
-    total = 0  
+    total = 0
     for item in carrito_items:
         subtotal = item.producto.precio * item.cantidad
         total += subtotal
 
     if request.method == 'POST':
         form = OrdenCompraForm(request.POST)
+        print("1")
         if form.is_valid():
+            print("2")
+            telefono = form.cleaned_data['telefono']
+            print(telefono)
+            direccion = form.cleaned_data['direccion']
+            print(direccion)
+            comuna = form.cleaned_data['comuna']
+            print(comuna)
+            # Ahora puedes usar estos datos como desees, por ejemplo, guardarlos en el modelo OrdenCompra
             orden_compra = form.save(commit=False)
             orden_compra.valor = total
+            print(total)
             orden_compra.usuario = request.user
-            orden_compra.save()
+            orden_compra.fecha = date.today()
+            print(date.today())
+            orden_compra.telefono = telefono  # Asigna el teléfono
+            orden_compra.direccion = direccion  # Asigna la dirección
+            orden_compra.comuna = comuna  # Asigna la comuna
+            orden_compra.save() 
+    # Agregar los productos del carrito a la orden de compra
+            for item in carrito_items:
+                orden_compra.productos.add(item.producto)
+
+            orden_compra.save() 
             
-            request.session['carrito'] = {}
-            
+            for item in carrito_items:
+                item.delete()
+
             messages.success(request, 'La orden de compra se ha creado exitosamente.')
-            return redirect('nombre_de_tu_vista_de_carrito')
+            return redirect('crear_orden')
     else:
         form = OrdenCompraForm()
-    
+
+    regiones = Region.objects.all()
     comunas = Comuna.objects.all()
 
-    return render(request, 'crear_orden.html', {'form': form, 'comunas': comunas, 'carrito_items' : carrito_items, 'total': total})
+    return render(request, 'crear_orden.html', {'form': form, 'regiones': regiones, 'comunas': comunas, 'carrito_items': carrito_items, 'total': total})
+
+
+def obtener_comunas(request):
+    region_id = request.GET.get('region_id')
+    comunas = Comuna.objects.filter(region_id=region_id).values('id', 'nombre')
+    return JsonResponse(list(comunas), safe=False)
 
 
 def modificar_despacho(request, factura_id):
@@ -142,3 +173,4 @@ def modificar_despacho(request, factura_id):
     # Si la solicitud es GET, simplemente renderiza la plantilla nuevamente
     context = {'factura': factura}
     return render(request, 'modificar_factura.html', context)
+
