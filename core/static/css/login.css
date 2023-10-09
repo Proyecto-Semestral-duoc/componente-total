@@ -7,7 +7,7 @@
     box-sizing: border-box;
 }
 
-body{
+.body2{
     display: flex;
     background: #0c1022;
     justify-content: center;

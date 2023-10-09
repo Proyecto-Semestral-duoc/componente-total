@@ -1,34 +1,20 @@
 {% extends "base.html" %}
-<!DOCTYPE html>
-<html lang="es">
-    <head>
-        <title>Sistema de Login</title>
-        <link rel="stylesheet" href="css\login.css">
-    </head>
-    <body>
-
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+<div class="body2">
         <div class="contaiuner">
             <div class="image">
                 <div class="form-box">
                     <div class="form">
-                    <h2>Registro</h2>
+                    <h2>Login</h2>
+                    <form method="post">
                     <div class="input-box">
-                        <input type="text" required>
-                        <label for="">Usuario</label>
                         {% csrf_token %}
                         {{ form.username.label_tag }}
                         {{ form.username }}
                     </div>
                     <div class="input-box">
-                        <input type="text" required>
-                        <label for="">Email</label>
-                        {% csrf_token %}
-                        {{ form.email.label_tag }}
-                        {{ form.email }}
-                    </div>
-                    <div class="input-box">
-                        <input type="text" required>
-                        <label for="">Contraseña</label>
                         {% csrf_token %}
                         {{ form.password.label_tag }}
                         {{ form.password }}
@@ -37,11 +23,11 @@
 <!--                        <a href="#">¿Olvido Contraseña?</a>
                         <a href="#">Crear cuenta</a> -->
                     </div>
-                    <button>Inicio de sesión</button>
+                    <button type="submit">Inicio de sesión</button>
                     </div>
+                </form>
                 </div>
             </div>
         </div>
-
-    </body>
-</html>
+    </div>
+{% endblock %}
