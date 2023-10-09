@@ -14,7 +14,7 @@
                     <p class="card-text">{{ producto.descripcion }}</p>
                     <p class="card-text">Precio: ${{ producto.precio }}</p>
                     <!-- Agregar un atributo data-producto-id al botón -->
-                    <button class="btn btn-primary agregar-carrito" data-toggle="modal" data-target="#agregarCarritoModal-{{ producto.id }}">Agregar al Carrito</button>
+                    <button data-toggle="modal" data-target="#agregarCarritoModal-{{ producto.id }}">Agregar al Carrito</button>
                 </div>                
             </div>
         </div>
@@ -37,8 +37,8 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                            <button type="submit" class="btn btn-primary">Agregar al Carrito</button>
+                            <button type="button" data-dismiss="modal">Cancelar</button>
+                            <button type="submit">Agregar al Carrito</button>
                         </div>
                     </form>
                 </div>

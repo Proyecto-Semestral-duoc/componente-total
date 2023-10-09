@@ -28,6 +28,15 @@ def visualizar_factura(request):
     
     return render(request, 'visualizar_factura.html', {'facturas': facturas})
 
+def modificar_factura(request):
+    user = request.user
+    
+    facturas = Factura.objects.all()
+    if not user.is_superuser:
+        facturas = Factura.objects.filter(orden_compra__usuario=user)
+    
+    return render(request, 'modificar_factura.html', {'facturas': facturas})
+
 def home(request):
     productos = Producto.objects.all()
     return render(request, 'home.html', {'productos': productos})
@@ -139,7 +148,29 @@ def crear_orden_compra(request):
 
     return render(request, 'crear_orden.html', {'form': form, 'regiones': regiones, 'comunas': comunas, 'carrito_items': carrito_items, 'total': total})
 
+
 def obtener_comunas(request):
     region_id = request.GET.get('region_id')
     comunas = Comuna.objects.filter(region_id=region_id).values('id', 'nombre')
     return JsonResponse(list(comunas), safe=False)
+
+
+def modificar_despacho(request, factura_id):
+    factura = Factura.objects.get(pk=factura_id)
+
+    if request.method == 'POST':
+        nuevo_estado_despacho = request.POST.get('nuevo_estado_despacho')
+        factura.estado_despacho = nuevo_estado_despacho
+        factura.save()
+
+        # Opción 1: Redirigir al usuario después de guardar
+        # return redirect('pagina_de_confirmacion')
+
+        # Opción 2: Devolver una respuesta JSON para actualizar el modal
+        response_data = {'success': True}
+        return JsonResponse(response_data)
+
+    # Si la solicitud es GET, simplemente renderiza la plantilla nuevamente
+    context = {'factura': factura}
+    return render(request, 'modificar_factura.html', context)
+
