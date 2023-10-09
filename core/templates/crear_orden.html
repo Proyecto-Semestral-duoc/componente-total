@@ -1,40 +1,71 @@
 {% extends "base.html" %}
 
 {% block content %}
+{% if messages %}
+<div class="alert alert-success p-3">
+  <ul>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
   <h2>Ingresar Orden de Compra</h2>
   <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
+    
+    <!-- Campo de Región -->
+    <div class="form-group">
+      <label for="{{ form.region.id_for_label }}">Región:</label>
+      {{ form.region }}
+    </div>
+    
+    <!-- Campo de Comuna (dinámico) -->
+    <div class="form-group">
+      <label for="{{ form.comuna.id_for_label }}">Comuna:</label>
+      <select name="comuna" id="{{ form.comuna.id_for_label }}" class="form-control">
+        <option value="">Seleccione una comuna</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+        <label for="{{ form.telefono.id_for_label }}">Telefono:</label>
+        {{ form.telefono }}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.direccion.id_for_label }}">dirección:</label>
+        {{ form.direccion }}
+      </div>
+    
+    <!-- Otros campos de tu formulario -->
+    
     <button type="submit" class="btn btn-primary">Guardar Orden de Compra</button>
   </form>
 
-  <!-- Tabla de Productos y Total -->
-  <h3>Productos en el Carrito</h3>
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Producto</th>
-        <th>Cantidad</th>
-        <th>Precio Unitario</th>
-        <th>Subtotal</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for item in carrito_items %}
-        <tr>
-          <td>{{ item.producto.nombre }}</td>
-          <td>{{ item.cantidad }}</td>
-          <td>${{ item.producto.precio }}</td>
-          <td>${{ item.subtotal }}</td>
-        </tr>
-      {% empty %}
-        <tr>
-          <td colspan="4">Tu carrito está vacío.</td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-
-  <h3>Total: ${{ total }}</h3>
-  
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      // Manejar el cambio en el campo de Región
+      $('#{{ form.region.id_for_label }}').change(function () {
+        var regionId = $(this).val();
+        var comunasSelect = $('#{{ form.comuna.id_for_label }}');
+        
+        // Realizar una petición AJAX para obtener las comunas correspondientes
+        $.ajax({
+          url: '/obtener_comunas/',  // Cambia la URL a la vista que obtiene las comunas
+          data: { region_id: regionId },
+          dataType: 'json',
+          success: function (data) {
+            // Actualizar las opciones del campo de Comuna
+            comunasSelect.empty();
+            comunasSelect.append($('<option>').text('Seleccione una comuna').attr('value', ''));
+            $.each(data, function (key, value) {
+              comunasSelect.append($('<option>').text(value.nombre).attr('value', key));
+            });
+          }
+        });
+      });
+    });
+  </script>
 {% endblock %}

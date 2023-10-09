@@ -24,6 +24,7 @@ urlpatterns = [
     path('crear_orden/', views.crear_orden_compra, name='crear_orden'),
     # URL para visualizar facturas
     path('visualizar_factura/', views.visualizar_factura, name='visualizar_factura'),
+
     # URL para listar las órdenes de compra
     path('orden_compra/', views.listar_ordenes_compra, name='orden_compra'),
 
@@ -32,6 +33,10 @@ urlpatterns = [
     path('modificar_estado_factura/<int:factura_id>/', views.modificar_estado_factura, name='modificar_estado_factura'),
     path('listar_modificar_orden/', views.listar_modificar_orden, name='listar_modificar_orden'),
     path('modificar_estado_orden/<int:orden_id>/', views.modificar_estado_orden, name='modificar_estado_orden'),
+
+    path('obtener_comunas/', views.obtener_comunas, name='obtener_comunas'),
+    # URL para modificar facturas
+    
 
 ]
 
