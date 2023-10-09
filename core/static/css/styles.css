@@ -15,8 +15,9 @@
 }
 .fondo{
     background-image: url('/static/images/fondo.png'); /* Cambia 'ruta-de-tu-imagen.jpg' por la ruta de tu imagen */
-    background-size: cover; /* Ajusta la imagen para cubrir todo el fondo */
-    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
 }
 
 
@@ -50,6 +51,15 @@
     background-color: #fff;
     border-radius: 5px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border: 5px solid black;
+}
+
+.cuadro {
+    margin: 0 auto;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border: 5px solid white;
 }
 
 header {
@@ -58,7 +68,7 @@ header {
 }
 
 h1 {
-    color: #007bff;
+    color: black;
     padding-left: 10px;
     padding-right: 10px;
     margin: auto;
