@@ -99,9 +99,6 @@ def crear_orden_compra(request):
         form = OrdenCompraForm(request.POST)
         if form.is_valid():
             orden_compra = form.save(commit=False)
-            
-
-            
             orden_compra.valor = total
             orden_compra.usuario = request.user
             orden_compra.save()
