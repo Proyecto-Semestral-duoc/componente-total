@@ -22,6 +22,16 @@ cd componente-total
 ```bash
 pip install -r requirements.txt
 ```
+4. Debes realizar las migraciones de la base de datos.
+```bash
+python manage.py makemigrations
+python manage.py migrate
+```
+5. Finalmente debes ejecutar el comando para que la pagina inicie
+```bash
+python manage.py runserver
+```
+   
 # Contribuciones
 Si deseas contribuir a este proyecto, sigue los siguientes pasos:
 
