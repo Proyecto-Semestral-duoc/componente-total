@@ -5,7 +5,7 @@
 {% block content %}
 
 <div class="cuadro mt-5">
-    <h1>Facturas </h1>
+    <h1>Órdenes de Compra</h1>
     <br><br>
     <table class="table table-bordered">
         <thead>
@@ -15,23 +15,22 @@
                 <th>Valor</th>
                 <th>Dirección</th>
                 <th>Teléfono</th>
-                <th>Estado de factura</th>
+                <th>Estado de Orden</th>
                 <th>Acciones</th> <!-- Agregamos la columna para las acciones -->
             </tr>
         </thead>
-
         <tbody>
-            {% for factura in facturas %}
+            {% for orden in ordenes %}
                 <tr>
-                    <td>{{ factura.orden_compra.id_orden }}</td>
-                    <td>{{ factura.orden_compra.fecha }}</td>
-                    <td>{{ factura.orden_compra.valor }}</td>
-                    <td>{{ factura.orden_compra.direccion }}</td>
-                    <td>{{ factura.orden_compra.telefono }}</td>
-                    <td>{{ factura.get_estado_despacho_display }}</td>
+                    <td>{{ orden.id_orden }}</td>
+                    <td>{{ orden.fecha }}</td>
+                    <td>{{ orden.valor }}</td>
+                    <td>{{ orden.direccion }}</td>
+                    <td>{{ orden.telefono }}</td>
+                    <td>{{ orden.get_estado_orden_display }}</td>
                     <td>
                         <!-- Agregamos un botón de formulario para modificar el estado -->
-                        <form method="post" action="{% url 'modificar_estado_factura' factura.id %}">
+                        <form method="post" action="{% url 'modificar_estado_orden' orden.id_orden %}">
                             {% csrf_token %}
                             <div class="d-flex justify-content-between align-items-center">
                                 <label for="estado" >Nuevo Estado:</label>
@@ -39,7 +38,7 @@
                                 <select name="estado" id="estado" class="form-control">
                                     <option value="rechazado">Rechazado</option>
                                     <option value="pendiente">Pendiente</option>
-                                    <option value="despachado">Despachado</option> <!-- Cambiamos el estado a despachado -->
+                                    <option value="aprobado">Aprobado</option>
                                 </select>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Modificar</button>
@@ -49,7 +48,6 @@
                 </tr>
             {% endfor %}
         </tbody>
-
     </table>
 </div>
 {% endblock %}
