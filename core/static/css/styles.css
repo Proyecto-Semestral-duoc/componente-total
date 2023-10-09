@@ -30,7 +30,7 @@
 }
 
 .nav-item:hover .nav-link {
-    color: greenyellow !important; /* Cambiar el color de texto al pasar el mouse */
+    color: aqua !important; /* Cambiar el color de texto al pasar el mouse */
 }
 
 .btn {
@@ -111,7 +111,9 @@ button {
     cursor: pointer;
 }
 
-button:hover {
+button:hover,
+.btn:hover,
+.agregar-carrito:hover {
     background-color: gray;
 }
 
