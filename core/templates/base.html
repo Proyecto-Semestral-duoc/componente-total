@@ -19,6 +19,7 @@
 </head>
 <body class="fondo">
     <!-- Barra de navegación -->
+<<<<<<< Updated upstream
     <nav class="navbar navbar-expand-lg fixed-top">
 
 
@@ -40,41 +41,58 @@
                 {% endif %}
                 {% endif %}
                 <!-- Agrega más elementos de menú aquí si es necesario -->
+=======
+        <nav class="navbar cabezera navbar-expand-lg sticky-top">
+            <!-- Menú lateral (izquierdo) -->
+            {% if user.is_authenticated %}
+            <div class="dropdown">
+                <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-bars"></i> Menú
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    {% if user.is_authenticated %}
+                    <a class="dropdown-item" href="{% url 'orden_compra' %}">Orden de Compra</a>
+                    <a class="dropdown-item" href="{% url 'visualizar_factura' %}">Visualizar facturas</a>
+                    {% endif %}
+    
+                    {% if user.is_authenticated and user.is_staff %}
+                    <a class="dropdown-item" href="{% url 'modificar_factura' %}">Modificar facturas</a>
+                    {% endif %}
+                    {% endif %}
+                    <!-- Agrega más elementos de menú aquí si es necesario -->
+                </div>
+>>>>>>> Stashed changes
             </div>
-        </div>
-    <!-- Fin del menú lateral (izquierdo) -->
-        <a class="navbar-brand" href="#">Componente Total</a>
-
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="/">Inicio</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'about' %}">Acerca de</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'contact' %}">Contacto</a>
-                </li>
-                {% if not user.is_authenticated %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'login' %}">Iniciar Sesión</a>
-                </li>
-                {% endif %}
-                {% if user.is_authenticated %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'ver_carrito' %}">Carrito</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'logout' %}">Cerrar Sesión</a>
-                </li>
-                
-                {% endif %}
-            </ul>
-        </div>
-    </nav>
-
-
+        <!-- Fin del menú lateral (izquierdo) -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <a class="navbar-brand" href="#">Componente Total</a>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'about' %}">Acerca de</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'contact' %}">Contacto</a>
+                    </li>
+                    {% if not user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">Iniciar Sesión</a>
+                    </li>
+                    {% endif %}
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'ver_carrito' %}">Carrito</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'logout' %}">Cerrar Sesión</a>
+                    </li>
+                    
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
 
     <!-- Contenido principal -->
     <div class="container mt-5">
@@ -82,6 +100,28 @@
         {% endblock %}
     </div>
 
+    <footer class="pie-de-pagina">
+            <div class="row">
+                <div class="col-md-4">
+                    <h3>Información de Contacto</h3>
+                    <p>Dirección: Calle Ejemplo #123</p>
+                    <p>Teléfono: (123) 456-7890</p>
+                    <p>Correo Electrónico: componentetotal@gmail.com</p>
+                </div>
+                <div class="col-md-4">
+                    <p>&copy; 2023 ComponenteTotal</p>
+                </div>
+                <div class="col-md-4">
+                    <h3>Enlaces Rápidos</h3>
+                    <ul>
+                        <li><a href="/">Inicio</a></li>
+                        <li><a href="/about">Acerca de</a></li>
+                        <li><a href="/contact">Contacto</a></li>
+                    </ul>
+
+                </div>
+        </div>
+    </footer>
     
 
     <!-- Incluir los archivos JavaScript de Bootstrap (jQuery y Popper.js) -->
@@ -89,8 +129,5 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="{% static 'js/script.js' %}"></script>
-    <footer class="pie-de-pagina">
-        <p>&copy; 2023 ComponenteTotal</p>
-    </footer>
 </body>
 </html>
