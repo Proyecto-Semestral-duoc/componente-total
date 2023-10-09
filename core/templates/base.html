@@ -21,7 +21,7 @@
     <nav class="navbar navbar-expand-lg">
         <!-- Menú lateral (izquierdo) -->
 
-        
+        {% if user.is_authenticated %}
         <div class="dropdown">
             <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-bars"></i> Menú
@@ -35,7 +35,7 @@
                 {% if user.is_authenticated and user.is_staff %}
                 <a class="dropdown-item" href="{% url 'modificar_factura' %}">Modificar facturas</a>
                 {% endif %}
-
+                {% endif %}
                 <!-- Agrega más elementos de menú aquí si es necesario -->
             </div>
         </div>

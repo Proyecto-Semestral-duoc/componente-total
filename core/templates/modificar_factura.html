@@ -18,18 +18,59 @@
                 <th>Estado de Despacho</th>
             </tr>
         </thead>
-        <tbody>
-            {% for factura in facturas %}
-                <tr>
-                    <td>{{ factura.orden_compra.id_orden }}</td>
-                    <td>{{ factura.orden_compra.fecha }}</td>
-                    <td>{{ factura.orden_compra.valor }}</td>
-                    <td>{{ factura.orden_compra.direccion }}</td>
-                    <td>{{ factura.orden_compra.telefono }}</td>
-                    <td>{{ factura.get_estado_despacho_display }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
+        <!-- Tu tabla de facturas aquí... -->
+        {% for factura in facturas %}
+        <tr>
+            <td>{{ factura.orden_compra.id_orden }}</td>
+            <td>{{ factura.orden_compra.fecha }}</td>
+            <td>{{ factura.orden_compra.valor }}</td>
+            <td>{{ factura.orden_compra.direccion }}</td>
+            <td>{{ factura.orden_compra.telefono }}</td>
+            <!-- Otros campos de la factura... -->
+            <td>
+                <a href="#" data-toggle="modal" data-target="#editarEstadoModal{{ factura.id }}">
+                    {{ factura.get_estado_despacho_display }}
+                </a>
+            </td>
+        </tr>
+        <!-- Modal de edición para cada factura -->
+        <div class="modal fade" id="editarEstadoModal{{ factura.id }}" tabindex="-1" role="dialog" aria-labelledby="editarEstadoModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editarEstadoModalLabel">Editar Estado de Despacho</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" action="{% url 'modificar_factura' factura.id %}">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <div class="cuadro-de-despacho">
+                                    <label data-toggle="modal" data-target="#editarEstadoModal{{ factura.id }}" data-backdrop="static">
+                                        Estado Actual:
+                                        <div class="form-control">{{ factura.get_estado_despacho_display }}</div>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                                
+                                <br>
+                                <label for="nuevo_estado_despacho">Nuevo Estado de Despacho:</label>
+                                <select class="form-control" id="nuevo_estado_despacho" name="nuevo_estado_despacho">
+                                    <option value="pendiente">Pendiente</option>
+                                    <option value="despachado">Despachado</option>
+                                    <option value="rechazado">Rechazado</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
     </table>
 </div>
 {% endblock %}
