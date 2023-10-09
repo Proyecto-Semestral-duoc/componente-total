@@ -188,3 +188,4 @@ def crear_productos_de_prueba(sender, **kwargs):
 
         for producto_data in productos_de_prueba:
             Producto.objects.get_or_create(**producto_data)
+

@@ -116,3 +116,4 @@ def crear_orden_compra(request):
     comunas = Comuna.objects.all()
 
     return render(request, 'crear_orden.html', {'form': form, 'comunas': comunas, 'carrito_items' : carrito_items, 'total': total})
+

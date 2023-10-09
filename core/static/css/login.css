@@ -1,13 +1,12 @@
-
 @import url('https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap');
-*{
+* {
     margin: 0;
     padding: 0;
     font-family: 'Roboto', sans-serif;
     box-sizing: border-box;
 }
 
-.body2{
+.body2 {
     display: flex;
     background: #0c1022;
     justify-content: center;
@@ -15,11 +14,12 @@
     min-height: 100vh;
     overflow: hidden;
 }
-.container{
+
+.container {
     position: relative;
     width: 350px;
     height: 500px;
-    background: rgba(0,0,0.75);
+    background: rgba(0, 0, 0, 0.75);
     border-radius: 20px;
     display: flex;
     justify-content: center;
@@ -27,62 +27,68 @@
     padding-inline: 32px;
     overflow: hidden;
 }
-.container::before{
+
+.container::before {
     content: "";
     position: absolute;
     height: 650px;
     width: 650px;
     background: conic-gradient(
-        transparent,transparent,transparent,#d400d4
+        transparent, transparent, transparent, #d400d4
     );
     animation: animate 4s linear infinite;
     animation-delay: -2s;
 }
 
-.container::after{
+.container::after {
     content: "";
     position: absolute;
     height: 650px;
     width: 650px;
     background: conic-gradient(
-        transparent,transparent,transparent,#00cfff
+        transparent, transparent, transparent, #00cfff
     );
     animation: animate 4s linear infinite;
 }
-@keyframes animate{
-    0%{
+
+@keyframes animate {
+    0% {
         transform: rotate(0);
     }
-    100%{
+    100% {
         transform: rotate(360deg);
     }
 }
-.image{
+
+.image {
     position: absolute;
     inset: 5px;
     background-color: #0c1022;
     z-index: 1;
     border-radius: 16px;
 }
-.for-box{
+
+.form-box {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 60vh;
 }
-.for-box .form h2{
+
+.form h2 {
     font-size: 32px;
     color: #fff;
     text-align: center;
 }
-.form .input-box{
+
+.form .input-box {
     position: relative;
     margin: 30px 0;
     width: 310px;
-    border-bottom: 2px soild #fff;
+    border-bottom: 2px solid #fff;
 }
 
-.input-box input{
+.input-box input {
     width: 100%;
     height: 50px;
     background: transparent;
@@ -92,11 +98,15 @@
     padding: 0 35px 0 5px;
     color: #fff;
 }
+
+
+
 input:focus ~ label,
-input:valid ~ label{
+input:valid ~ label {
     top: -5px;
 }
-.input-box label{
+
+.input-box label {
     position: absolute;
     color: #fff;
     top: 50%;
@@ -104,31 +114,70 @@ input:valid ~ label{
     transform: translateY(-50%);
     font-size: 16px;
     pointer-events: none;
-    transition: .3s
+    transition: 0.3s;
 }
-.group{
+
+.group {
     display: flex;
     justify-content: space-between;
     font-size: 13px;
 }
-.group a{
+
+.group a {
     position: relative;
     top: -15px;
     color: #fff;
     text-decoration: none;
     font-weight: 500;
 }
-button{
+
+/* Estilo para el botón de inicio de sesión */
+button {
     height: 40px;
-    width: 100px;
+    width: 100%;
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
     outline: none;
     border: none;
     border-radius: 5px;
+    margin-top: 20px; /* Agregar margen superior para separarlo de los campos de entrada */
 }
-buttom:focus{
+
+
+button:focus {
     color: #0c1022;
-    border: 2px soild #fff;
+    border: 2px solid #fff;
+}
+
+
+/* Estilos para las etiquetas de los campos de entrada */
+.input-box {
+    position: relative;
+    margin: 20px 0;
+}
+
+.input-box input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-bottom: 2px solid #ccc;
+    outline: none;
+}
+
+.input-box label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
+
+/* Estilo para mover la etiqueta cuando el campo tiene el foco o contenido */
+.input-box input:focus ~ label,
+.input-box input:valid ~ label {
+    top: -20px;
+    font-size: 12px;
+    color: #999;
 }
