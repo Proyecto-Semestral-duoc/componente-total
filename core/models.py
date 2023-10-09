@@ -16,8 +16,6 @@ class CustomUser(AbstractUser):
         return self.username
 
 
-
-
 def default_imagen_producto():
     return "productos/default.jpg"
 
@@ -42,7 +40,6 @@ class CarritoItem(models.Model):
         
     def __str__(self):
         return f"{self.cantidad} x {self.producto.nombre} para {self.usuario.username}"
-
 
 class Region(models.Model):
     nombre = models.CharField(max_length=255, default='No seleccionado')
@@ -188,4 +185,3 @@ def crear_productos_de_prueba(sender, **kwargs):
 
         for producto_data in productos_de_prueba:
             Producto.objects.get_or_create(**producto_data)
-

@@ -33,7 +33,8 @@
                 {% endif %}
 
                 {% if user.is_authenticated and user.is_staff %}
-                <a class="dropdown-item" href="{% url 'modificar_factura' %}">Modificar facturas</a>
+                <a class="dropdown-item" href="{% url 'listar_modificar_factura' %}">Modificar facturas</a>
+                <a class="dropdown-item" href="{% url 'listar_modificar_orden' %}">Modificar orden</a>
                 {% endif %}
 
                 <!-- Agrega más elementos de menú aquí si es necesario -->

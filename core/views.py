@@ -25,14 +25,47 @@ def visualizar_factura(request):
     
     return render(request, 'visualizar_factura.html', {'facturas': facturas})
 
-def modificar_factura(request):
-    user = request.user
+def listar_modificar_orden(request):
+    # Recupera todas las órdenes de compra almacenadas en la base de datos
+    ordenes = OrdenCompra.objects.all()
     
+    # Pasa las órdenes de compra al contexto para que estén disponibles en la plantilla
+    return render(request, 'modificar_orden.html', {'ordenes': ordenes})
+
+def modificar_estado_orden(request, orden_id):
+    orden = get_object_or_404(OrdenCompra, id_orden=orden_id)
+
+    if request.method == 'POST':
+        nuevo_estado = request.POST.get('estado')
+        orden.estado_orden = nuevo_estado
+        orden.save()
+        
+        if nuevo_estado == 'aprobado':
+            # Verifica si la orden ya tiene una factura asociada
+            if not Factura.objects.filter(orden_compra=orden).exists():
+                factura = Factura()
+                factura.orden_compra = orden  # Puedes establecer el estado de despacho como desees
+                factura.save()
+
+    return redirect('listar_modificar_orden') # Redirige a la lista de órdenes de compra
+
+def listar_modificar_factura(request):
+    # Recupera todas las facturas almacenadas en la base de datos
     facturas = Factura.objects.all()
-    if not user.is_superuser:
-        facturas = Factura.objects.filter(orden_compra__usuario=user)
     
+    # Pasa las facturas al contexto para que estén disponibles en la plantilla
     return render(request, 'modificar_factura.html', {'facturas': facturas})
+
+
+def modificar_estado_factura(request, factura_id):
+    factura = get_object_or_404(Factura, id=factura_id)
+
+    if request.method == 'POST':
+        nuevo_estado = request.POST.get('estado')
+        factura.estado_despacho = nuevo_estado
+        factura.save()
+
+    return redirect('listar_modificar_factura')
 
 def home(request):
     productos = Producto.objects.all()
