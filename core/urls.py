@@ -24,6 +24,7 @@ urlpatterns = [
     path('crear_orden/', views.crear_orden_compra, name='crear_orden'),
     # URL para visualizar facturas
     path('visualizar_factura/', views.visualizar_factura, name='visualizar_factura'),
+    path('modificar_factura/', views.modificar_factura, name='modificar_factura'),
 
 ]
 

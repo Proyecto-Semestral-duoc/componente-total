@@ -25,6 +25,15 @@ def visualizar_factura(request):
     
     return render(request, 'visualizar_factura.html', {'facturas': facturas})
 
+def modificar_factura(request):
+    user = request.user
+    
+    facturas = Factura.objects.all()
+    if not user.is_superuser:
+        facturas = Factura.objects.filter(orden_compra__usuario=user)
+    
+    return render(request, 'modificar_factura.html', {'facturas': facturas})
+
 def home(request):
     productos = Producto.objects.all()
     return render(request, 'home.html', {'productos': productos})

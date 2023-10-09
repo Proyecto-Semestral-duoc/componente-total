@@ -31,6 +31,11 @@
                 <a class="dropdown-item" href="{% url 'orden_compra' %}">Orden de Compra</a>
                 <a class="dropdown-item" href="{% url 'visualizar_factura' %}">Visualizar facturas</a>
                 {% endif %}
+
+                {% if user.is_authenticated and user.is_staff %}
+                <a class="dropdown-item" href="{% url 'modificar_factura' %}">Modificar facturas</a>
+                {% endif %}
+
                 <!-- Agrega más elementos de menú aquí si es necesario -->
             </div>
         </div>
