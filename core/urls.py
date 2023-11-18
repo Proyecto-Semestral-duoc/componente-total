@@ -35,6 +35,7 @@ urlpatterns = [
     path('modificar_estado_orden/<int:orden_id>/', views.modificar_estado_orden, name='modificar_estado_orden'),
 
     path('obtener_comunas/', views.obtener_comunas, name='obtener_comunas'),
+    path('perfil/', views.perfil, name='perfil'),
     # URL para modificar facturas
     
 

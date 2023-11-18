@@ -207,3 +207,10 @@ def modificar_despacho(request, factura_id):
     context = {'factura': factura}
     return render(request, 'modificar_factura.html', context)
 
+def perfil(request):
+    # Obtener el usuario autenticado
+    usuario = request.user
+    
+    # Renderizar la plantilla con los datos del usuario
+    return render(request, 'perfil.html', {'usuario': usuario})
+
