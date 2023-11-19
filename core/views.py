@@ -6,9 +6,20 @@ from .forms import *
 from django.http import JsonResponse
 from datetime import date
 
+
 # Create your views here.
 
 # Asegúrate de importar tu modelo de OrdenCompra
+def registro(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')  # Redirige al usuario a la página de inicio de sesión después de registrarse
+    else:
+        form = SignUpForm()
+    return render(request, 'registro.html', {'form': form})
+
 
 def listar_ordenes_compra(request):
     user = request.user

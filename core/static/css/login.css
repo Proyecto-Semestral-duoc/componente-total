@@ -20,6 +20,20 @@
     margin-top: 15px;
 }
 
+.contenedor-registro {
+    background-color: black;
+    text-align: center; /* Para centrar el contenido */
+    padding: 20px; /* Añade espacio alrededor del contenido */
+}
+.registro {
+    background-color: black;
+    color: white;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    font-size: 16px;
+}
+
 .body2 {
     display: flex;
     background: #0c1022;

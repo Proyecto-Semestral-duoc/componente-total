@@ -1,6 +1,6 @@
 from .models import *
 from django import forms
-
+from django.contrib.auth.forms import UserCreationForm
 
 class OrdenCompraForm(forms.ModelForm):
     
@@ -28,3 +28,11 @@ class CustomUserForm(forms.ModelForm):
     class Meta:
         model = CustomUser
         fields = ['nombre', 'apellido', 'fecha_nacimiento', 'email', 'direccion']  # Los campos que se pueden modificar en el formulario
+
+class SignUpForm(UserCreationForm):
+    email = forms.EmailField(max_length=254, help_text='Requerido, ingrese una direccion de correo válida.')
+    fecha_nacimiento = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'fecha_nacimiento', 'direccion', 'nombre', 'apellido',  'password1', 'password2', )

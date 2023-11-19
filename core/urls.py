@@ -14,6 +14,7 @@ urlpatterns = [
     # URL para la vista de inicio de sesión
     path('login/', LoginView.as_view(template_name='login.html'), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
+    path('registro/', views.registro, name='registro'),
     path('about/', views.about, name='about'),
     path('contact/', views.contact, name='contact'),
     
