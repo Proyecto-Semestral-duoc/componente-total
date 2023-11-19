@@ -22,12 +22,14 @@
                                 <p class="text-danger">Contraseña incorrecta. Inténtelo de nuevo.</p>
                             {% endif %}
                         </div>
-                        <div class="group">
-                            <!-- <a href="#">¿Olvidó su Contraseña?</a>
-                            <a href="#">Crear cuenta</a> -->
-                        </div>
-                        <button type="submit">Inicio de sesión</button>
+                        <button type="submit">Iniciar Sesión</button>
                     </form>
+                    <div class="contenedor-registro">
+                        <!-- Agregar botón de registro -->
+                        <a href="{% url 'registro' %}" class="registro">Registrarse</a>
+                        <!-- Otras opciones -->
+                        <!-- <a href="#">¿Olvidó su Contraseña?</a> -->
+                    </div>
                 </div>
             </div>
         </div>
