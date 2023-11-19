@@ -214,3 +214,15 @@ def perfil(request):
     # Renderizar la plantilla con los datos del usuario
     return render(request, 'perfil.html', {'usuario': usuario})
 
+def modificar_perfil(request):
+    usuario = request.user
+    if request.method == 'POST':
+        form = CustomUserForm(request.POST, instance=usuario)
+        if form.is_valid():
+            form.save()
+            return redirect('perfil')  # Redirige a la página del perfil después de guardar los cambios
+    else:
+        form = CustomUserForm(instance=usuario)
+    
+    return render(request, 'modificar_perfil.html', {'form': form})
+

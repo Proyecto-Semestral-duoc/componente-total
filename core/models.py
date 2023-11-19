@@ -10,7 +10,8 @@ class CustomUser(AbstractUser):
     # Agrega campos personalizados aquí
     fecha_nacimiento = models.DateField(null=True, blank=True)
     direccion = models.CharField(max_length=255, null=True, blank=True)
-
+    nombre = models.CharField(max_length=100, blank=True)
+    apellido = models.CharField(max_length=100, blank=True)
 
     def __str__(self):
         return self.username

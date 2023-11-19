@@ -8,9 +8,13 @@
             <h2>Perfil de Usuario</h2>
         </div>
         <div class="card-body">
-            <h5 class="card-title">{{ user.username }}</h5>
+            <h5 class="card-title">Usuario: "{{ user.username }}"</h5>
+            <p class="card-text">Nombre: {{ user.nombre }}</p>
+            <p class="card-text">Apellido: {{ user.apellido }}</p>
+            <p class="card-text">Correo electrónico: {{ user.email }}</p>
             <p class="card-text">Fecha de nacimiento: {{ user.fecha_nacimiento }}</p>
             <p class="card-text">Dirección: {{ user.direccion }}</p>
+            <a href="{% url 'modificar_perfil' %}" class="btn btn-primary">Modificar perfil</a>
             <!-- Otros datos del usuario aquí -->
         </div>
         <div class="card-footer text-muted">
