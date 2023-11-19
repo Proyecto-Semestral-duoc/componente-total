@@ -18,6 +18,9 @@
                             {% csrf_token %}
                             {{ form.password.label_tag }}
                             {{ form.password }}
+                            {% if form.errors %}
+                                <p class="text-danger">Contraseña incorrecta. Inténtelo de nuevo.</p>
+                            {% endif %}
                         </div>
                         <div class="group">
                             <!-- <a href="#">¿Olvidó su Contraseña?</a>
