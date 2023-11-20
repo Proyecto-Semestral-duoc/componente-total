@@ -35,10 +35,14 @@ class CarritoItem(models.Model):
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
     cantidad = models.PositiveIntegerField(default=1)
     fecha_agregado = models.DateTimeField(auto_now_add=True)
-        
     def subtotal(self):
         return self.cantidad * self.producto.precio
         
+    def costo_con_iva(self):
+        subtotal = self.subtotal()
+        iva = Decimal('0.19')
+        return subtotal + (subtotal * iva)  # Calculamos el costo final con el 19% de IVA
+    
     def __str__(self):
         return f"{self.cantidad} x {self.producto.nombre} para {self.usuario.username}"
 
@@ -77,10 +81,15 @@ class OrdenCompra(OrdenBase):
         choices=ESTADO_ORDEN_CHOICES,
         default='pendiente',
     )
-
+    
     usuario = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     productos = models.ManyToManyField(Producto)
-
+    def iva_orden(self):
+        subtotal = self.valor
+        iva = Decimal('0.19')
+        total_con_iva = subtotal + (subtotal * iva)
+        return f"${total_con_iva.quantize(Decimal('0.00'))}"  # Redondea a 0 decimales y agrega el signo de peso
+    
     def __str__(self):
         return f'OrdenCompra #{self.id_orden}'
 
@@ -99,6 +108,7 @@ class Factura(models.Model):
         choices=ESTADO_DESPACHO_CHOICES,
         default='pendiente',
     )
+
     def __str__(self):
         return f'OrdenCompra #{self.orden_compra.id_orden}'
 
@@ -141,7 +151,7 @@ def crear_productos_de_prueba(sender, **kwargs):
         'nombre': 'Laptop Acer Aspire 15"',
         'precio': 799.99,
         'descripcion': 'Laptop Acer Aspire con pantalla de 15", procesador Intel Core i5 y 8 GB de RAM.',
-        # Otras propiedades del producto 1
+        'imagen': 'productos/producto.png'# Otras propiedades del producto 1''
     },
     {
         'nombre': 'Monitor Dell UltraSharp 27"',

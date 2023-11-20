@@ -21,15 +21,27 @@
           <td>${{ item.producto.precio }}</td>
           <td>${{ item.subtotal }}</td>
           <td>
-            <a href="{% url 'eliminar_item' item_id=item.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+            <a href="{% url 'eliminar_item' item_id=item.id %}" class="btn btn-danger btn-sm">Eliminar uno</a>
+            <a href="{% url 'eliminar_todos_items' item_id=item.id %}" class="btn btn-danger btn-sm">Eliminar todos</a>
           </td>
         </tr>
+        
       {% empty %}
         <tr>
           <td colspan="5">Tu carrito está vacío.</td>
         </tr>
       {% endfor %}
     </tbody>
+    <!-- Agrega una fila para mostrar el costo total con IVA -->
+    {% if carrito_items %}
+    <tfoot>
+      <tr>
+        <td colspan="4"></td>
+        <td><strong>Total con IVA:</strong></td>
+        <td><strong>${{ total_con_iva }}</strong></td>
+      </tr>
+    </tfoot>
+    {% endif %}
   </table>
   <a href="{% url 'crear_orden' %}" class="btn btn-primary p-3">Generar Orden</a>
 </div>

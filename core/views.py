@@ -100,8 +100,11 @@ def ver_carrito(request):
     else:
         # Si el usuario no está autenticado, mostrar un carrito vacío
         carrito_items = []
+    
+    # Calcular el costo total con IVA
+    total_con_iva = sum(item.costo_con_iva() for item in carrito_items)
 
-    return render(request, 'ver_carrito.html', {'carrito_items': carrito_items})
+    return render(request, 'ver_carrito.html', {'carrito_items': carrito_items, 'total_con_iva': total_con_iva})
 
 
 def agregar_al_carrito(request, producto_id):
@@ -120,7 +123,10 @@ def agregar_al_carrito(request, producto_id):
                 producto=producto
             )
             # Actualizar la cantidad en el carrito
-            carrito_item.cantidad += cantidad
+            if not created:
+                carrito_item.cantidad += cantidad
+            else:
+                carrito_item.cantidad = cantidad
             carrito_item.save()
             messages.success(request, f'Se agregaron {cantidad} {producto.nombre} al carrito.')
         else:
@@ -131,15 +137,22 @@ def agregar_al_carrito(request, producto_id):
 
 
 def eliminar_item_del_carrito(request, item_id):
-    # Busca el elemento del carrito por ID o muestra un error 404 si no se encuentra
     item = get_object_or_404(CarritoItem, id=item_id)
 
-    # Elimina el elemento del carrito
-    item.delete()
+    # Reducir la cantidad del elemento del carrito
+    if item.cantidad > 1:
+        item.cantidad -= 1
+        item.save()
+    else:
+        item.delete()
 
-    # Redirige de nuevo a la página del carrito
-    return redirect('ver_carrito') 
- # Cambia 'ver_carrito' al nombre de la URL de tu vista de carrito
+    return redirect('ver_carrito')
+
+def eliminar_todos_items_del_carrito(request, item_id):
+    item = get_object_or_404(CarritoItem, id=item_id)
+    CarritoItem.objects.filter(producto=item.producto).delete()
+    return redirect('ver_carrito')
+
 def crear_orden_compra(request):
     if request.user.is_authenticated:
         carrito_items = CarritoItem.objects.filter(usuario=request.user)
