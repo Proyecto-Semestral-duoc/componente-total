@@ -157,37 +157,37 @@ def crear_productos_de_prueba(sender, **kwargs):
         'nombre': 'Monitor Dell UltraSharp 27"',
         'precio': 349.99,
         'descripcion': 'Monitor Dell UltraSharp de 27" con resolución 4K y tecnología IPS.',
-        # Otras propiedades del producto 2
+        'imagen': 'productos/producto2.jpg'# Otras propiedades del producto 2
     },
     {
         'nombre': 'Teclado Mecánico RGB',
         'precio': 89.99,
         'descripcion': 'Teclado mecánico RGB con retroiluminación personalizable y teclas programables.',
-        # Otras propiedades del producto 3
+        'imagen': 'productos/producto3.png'# Otras propiedades del producto 3
     },
     {
         'nombre': 'Mouse Inalámbrico Logitech',
         'precio': 29.99,
         'descripcion': 'Mouse inalámbrico Logitech con sensor óptico y diseño ergonómico.',
-        # Otras propiedades del producto 4
+        'imagen': 'productos/producto4.jpeg'# Otras propiedades del producto 4
     },
     {
         'nombre': 'Tarjeta Gráfica NVIDIA GeForce RTX 3080',
         'precio': 999.99,
         'descripcion': 'Tarjeta gráfica NVIDIA GeForce RTX 3080 con 10 GB de memoria GDDR6X.',
-        # Otras propiedades del producto 5
+        'imagen': 'productos/producto5.jpeg'# Otras propiedades del producto 5
     },
     {
         'nombre': 'Disco Duro SSD Samsung 1TB',
         'precio': 149.99,
         'descripcion': 'Disco duro SSD Samsung de 1TB con velocidad de lectura/escritura rápida.',
-        # Otras propiedades del producto 6
+        'imagen': 'productos/producto6.png'# Otras propiedades del producto 6
     },
     {
         'nombre': 'Impresora HP LaserJet Pro',
         'precio': 299.99,
         'descripcion': 'Impresora láser HP LaserJet Pro con impresión a color y escaneo.',
-        # Otras propiedades del producto 7
+        'imagen': 'productos/producto7.jpeg'# Otras propiedades del producto 7
     },
     # Puedes agregar más productos de prueba según sea necesario
     ]
