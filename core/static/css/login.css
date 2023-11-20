@@ -209,3 +209,8 @@ button:focus {
     font-size: 12px;
     color: #999;
 }
+
+.registro {
+    color: white;
+    margin-left: 25%;
+}

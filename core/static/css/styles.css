@@ -153,3 +153,9 @@ textarea {
 textarea {
     resize: vertical;
 }
+
+
+.title {
+    text-align: center;
+    font-size: 40px;
+}
