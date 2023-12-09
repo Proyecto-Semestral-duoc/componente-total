@@ -4,6 +4,7 @@
 <div class="margen">
     <div class="row">
         <div class="col-md-6">
+            <br><br>
             <h1>Generar Reporte</h1>
             <form id="report-form" method="post">
                 {% csrf_token %}
@@ -31,10 +32,23 @@
 </div>
 
 <script>
+    function validateForm() {
+        var startDate = document.getElementById('start_date').value;
+        var endDate = document.getElementById('end_date').value;
+
+        if (startDate === "" || endDate === "") {
+            alert("Por favor, ingrese ambas fechas.");
+            return false;
+        }
+        return true;
+    }
+
     function generateReport(type) {
-        document.getElementById('report_type').value = type;
-        document.getElementById('report-form').action = type === 'pdf' ? '{% url "generar_reporte" %}' : '{% url "generar_reporte_excel" %}';
-        document.getElementById('report-form').submit();
+        if (validateForm()) {
+            document.getElementById('report_type').value = type;
+            document.getElementById('report-form').action = type === 'pdf' ? '{% url "generar_reporte" %}' : '{% url "generar_reporte_excel" %}';
+            document.getElementById('report-form').submit();
+        }
     }
 </script>
 {% endblock %}

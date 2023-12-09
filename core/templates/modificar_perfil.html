@@ -2,32 +2,32 @@
 {% load static %}
 
 {% block content %}
-<div class="container mt-5">
+<div class="cuadro card text-center">
     <div class="card text-center">
         <div class="card-header">
-            <h2>Modificar Perfil</h2>
+            <h2 class="title">Modificar Perfil</h2>
         </div>
         <div class="card-body">
             <form method="post" action="{% url 'modificar_perfil' %}">
                 {% csrf_token %}
                 <div class="form-group">
-                    <label for="nombre">Nombre:</label>
+                    <label for="nombre" class="text-start">Nombre:</label>
                     <input type="text" class="form-control" id="nombre" name="nombre" value="{{ user.nombre }}">
                 </div>
                 <div class="form-group">
-                    <label for="apellido">Apellido:</label>
+                    <label for="apellido" class="text-start">Apellido:</label>
                     <input type="text" class="form-control" id="apellido" name="apellido" value="{{ user.apellido }}">
                 </div>
                 <div class="form-group">
-                    <label for="fecha_nacimiento">Fecha de Nacimiento:</label>
+                    <label for="fecha_nacimiento" class="text-start">Fecha de Nacimiento:</label>
                     <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" value="{% if user.fecha_nacimiento %}{{ user.fecha_nacimiento|date:"Y-m-d" }}{% endif %}">
                 </div>
                 <div class="form-group">
-                    <label for="email">Correo electrónico:</label>
+                    <label for="email" class="text-start">Correo electrónico:</label>
                     <input type="text" class="form-control" id="email" name="email" value="{{ user.email }}">
                 </div>
                 <div class="form-group">
-                    <label for="direccion">Dirección:</label>
+                    <label for="direccion" class="text-start">Dirección:</label>
                     <input type="text" class="form-control" id="direccion" name="direccion" value="{{ user.direccion }}">
                 </div>
                 <!-- Agrega más campos según sea necesario -->
