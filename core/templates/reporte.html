@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="margen">
+    <div class="row">
+        <div class="col-md-6">
+            <h1>Generar Reporte</h1>
+            <form id="report-form" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="start_date">Fecha de inicio:</label>
+                    <input type="date" id="start_date" name="start_date" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="end_date">Fecha de fin:</label>
+                    <input type="date" id="end_date" name="end_date" class="form-control">
+                </div>
+                <div class="form-group">
+                    <button type="button" onclick="generateReport('pdf')" class="btn btn-primary mr-3">Generar PDF</button>
+                    <button type="button" onclick="generateReport('excel')" class="btn btn-success">Generar Excel</button>
+                </div>
+                <input type="hidden" id="report_type" name="report_type">
+            </form>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-md-6">
+            <a href="{% url 'orden_compra' %}" class="btn btn-secondary">Volver</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    function generateReport(type) {
+        document.getElementById('report_type').value = type;
+        document.getElementById('report-form').action = type === 'pdf' ? '{% url "generar_reporte" %}' : '{% url "generar_reporte_excel" %}';
+        document.getElementById('report-form').submit();
+    }
+</script>
+{% endblock %}

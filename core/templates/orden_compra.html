@@ -4,6 +4,7 @@
 
 {% block content %}
 
+
 <div class="cuadro mt-5">
     <h1>Órdenes de Compra</h1>
     <br><br>
@@ -32,4 +33,12 @@
         </tbody>
     </table>
 </div>
+
+{% if user.is_superuser %}
+        <!-- Botón solo visible para el superusuario -->
+        <form action="{% url 'generar_reporte' %}" method="get">
+            <button type="submit">Realizar Reporte</button>
+        </form>
+{% endif %}
+
 {% endblock %}
