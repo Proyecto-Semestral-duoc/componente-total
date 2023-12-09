@@ -39,6 +39,8 @@ urlpatterns = [
     path('obtener_comunas/', views.obtener_comunas, name='obtener_comunas'),
     path('perfil/', views.perfil, name='perfil'),
     path('modificar_perfil/', views.modificar_perfil, name='modificar_perfil'),
+    path('generar_reporte/', views.generar_reporte, name='generar_reporte'), 
+    path('generar_reporte_excel/', views.generar_reporte_excel, name='generar_reporte_excel'), # Esta línea define la URL para la vista generar_reporte
     # URL para modificar facturas
     
 

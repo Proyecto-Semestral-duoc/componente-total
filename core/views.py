@@ -5,11 +5,22 @@ from django.contrib.auth.decorators import login_required
 from .forms import *
 from django.http import JsonResponse
 from datetime import date
+from django.http import HttpResponse
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Spacer, Paragraph
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib import colors
+import xlsxwriter
+from datetime import datetime
+from django.contrib.auth.decorators import user_passes_test
+from io import BytesIO
 
 
-# Create your views here.
+def es_superusuario(user):
+    return user.is_superuser
 
-# Asegúrate de importar tu modelo de OrdenCompra
+# Asegúrate de importar tu modelo de OrdenCqompra
 def registro(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
@@ -30,6 +41,124 @@ def listar_ordenes_compra(request):
     
     return render(request, 'orden_compra.html', {'ordenes': ordenes})
 
+@user_passes_test(es_superusuario)
+def generar_reporte(request):
+    if request.method == 'POST':
+        start_date = request.POST.get('start_date')
+        end_date = request.POST.get('end_date')
+
+        ordenes = OrdenCompra.objects.filter(fecha__range=[start_date, end_date])
+
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="reporte_ordenes_compra.pdf"'
+
+        buffer = BytesIO()
+        pdf = SimpleDocTemplate(buffer, pagesize=letter)
+        elements = []
+
+        styles = getSampleStyleSheet()
+        title = f"Lista de reportes filtrados por {start_date} hasta {end_date}"
+        elements.append(Paragraph(title, styles['Title']))
+
+        data = [
+            ['Nombre', 'Valor']
+        ]
+
+        for orden in ordenes:
+            data.append(['Número de Factura:', str(orden.id_orden)])
+            data.append(['Fecha:', str(orden.fecha)])
+            data.append(['Valor total (con IVA):', orden.iva_orden()])  # Llama al método para obtener el valor
+            data.append(['Dirección:', str(orden.direccion)])
+            data.append(['Teléfono:', str(orden.telefono)])
+            data.append(['Estado de Orden:', str(orden.get_estado_orden_display())])
+            data.append(['', ''])  # Espacio entre cada orden
+
+        style = TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), colors.gray),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+            ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+            ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+            ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+            ('GRID', (0, 0), (-1, -1), 1, colors.black)
+        ])
+
+        ordenes_table = Table(data)
+        ordenes_table.setStyle(style)
+
+        # Aplicar estilo específico a los elementos deseados
+        for i in range(0, len(data), 2):
+            if data[i][0] == 'Número de Factura:':
+                # Aplicar estilo solo al primer elemento 'Número de Factura:'
+                ordenes_table.setStyle(TableStyle([
+                    ('FONTNAME', (0, i), (0, i), 'Helvetica-Bold'),
+                    ('FONTSIZE', (0, i), (0, i), 12),
+                ]))
+                break  # Salir del bucle después de aplicar el estilo al primer elemento
+
+        elements.append(ordenes_table)
+
+        pdf.build(elements)
+        pdf_buffer = buffer.getvalue()
+        buffer.close()
+
+        response.write(pdf_buffer)
+        return response
+
+    return render(request, 'reporte.html')
+
+
+@user_passes_test(es_superusuario)
+def generar_reporte_excel(request):
+    if request.method == 'POST':
+        start_date = request.POST.get('start_date')
+        end_date = request.POST.get('end_date')
+
+        ordenes = OrdenCompra.objects.filter(fecha__range=[start_date, end_date])
+
+        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response['Content-Disposition'] = 'attachment; filename="reporte_ordenes_compra.xlsx"'
+
+        # Crear un nuevo libro y hoja de trabajo de Excel
+        workbook = xlsxwriter.Workbook(response)
+        worksheet = workbook.add_worksheet()
+
+        # Establecer el formato para las celdas
+        cell_format = workbook.add_format({
+            'bold': True,
+            'font_size': 12,
+            'border': 1,
+            'align': 'center',
+            'valign': 'vcenter',
+            'fg_color': '#D3D3D3',
+                # Color de fondo similar al del PDF
+        })
+
+        # Aplicar borde negro a las celdas
+        cell_format.set_border_color('black')
+
+        # Encabezados de la tabla
+        headers = ['Número de Orden', 'Usuario', 'Fecha', 'Valor total (con IVA)', 'Dirección', 'Teléfono', 'Estado de Orden']
+        for col, header in enumerate(headers):
+            worksheet.write(0, col, header, cell_format)
+
+        # Escribir los datos de las órdenes en filas sucesivas
+        row = 1
+        for orden in ordenes:
+            worksheet.write(row, 0, str(orden.id_orden))
+            worksheet.write(row, 1, str(orden.usuario.username))
+            worksheet.write(row, 2, str(orden.fecha.strftime('%Y-%m-%d')))
+            worksheet.write(row, 3, orden.iva_orden())
+            worksheet.write(row, 4, str(orden.direccion))
+            worksheet.write(row, 5, str(orden.telefono))
+            worksheet.write(row, 6, str(orden.get_estado_orden_display()))
+            row += 1
+
+        workbook.close()
+        return response
+
+    return render(request, 'reporte.html')
+
+
 def visualizar_factura(request):
     user = request.user
     
@@ -39,6 +168,7 @@ def visualizar_factura(request):
     
     return render(request, 'visualizar_factura.html', {'facturas': facturas})
 
+@user_passes_test(es_superusuario)
 def listar_modificar_orden(request):
     # Recupera todas las órdenes de compra almacenadas en la base de datos
     ordenes = OrdenCompra.objects.all()
@@ -46,6 +176,7 @@ def listar_modificar_orden(request):
     # Pasa las órdenes de compra al contexto para que estén disponibles en la plantilla
     return render(request, 'modificar_orden.html', {'ordenes': ordenes})
 
+@user_passes_test(es_superusuario)
 def modificar_estado_orden(request, orden_id):
     orden = get_object_or_404(OrdenCompra, id_orden=orden_id)
 
@@ -63,6 +194,7 @@ def modificar_estado_orden(request, orden_id):
 
     return redirect('listar_modificar_orden') # Redirige a la lista de órdenes de compra
 
+@user_passes_test(es_superusuario)
 def listar_modificar_factura(request):
     # Recupera todas las facturas almacenadas en la base de datos
     facturas = Factura.objects.all()
@@ -71,6 +203,7 @@ def listar_modificar_factura(request):
     return render(request, 'modificar_factura.html', {'facturas': facturas})
 
 
+@user_passes_test(es_superusuario)
 def modificar_estado_factura(request, factura_id):
     factura = get_object_or_404(Factura, id=factura_id)
 
@@ -211,7 +344,7 @@ def obtener_comunas(request):
     comunas = Comuna.objects.filter(region_id=region_id).values('id', 'nombre')
     return JsonResponse(list(comunas), safe=False)
 
-
+@user_passes_test(es_superusuario)
 def modificar_despacho(request, factura_id):
     factura = Factura.objects.get(pk=factura_id)
 
