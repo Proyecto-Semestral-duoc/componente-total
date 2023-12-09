@@ -8,6 +8,8 @@
 <div class="cuadro mt-5">
     <h1>Órdenes de Compra</h1>
     <br><br>
+    <input type="text" id="searchInput" class="form-control mt-3" placeholder="Buscar" />
+    <br>
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -40,5 +42,34 @@
             <button type="submit">Realizar Reporte</button>
         </form>
 {% endif %}
+
+
+<script>
+    document.getElementById('searchInput').addEventListener('keyup', function () {
+        const filter = this.value.toUpperCase();
+        const rows = document.querySelector('table tbody').getElementsByTagName('tr');
+
+        for (let i = 0; i < rows.length; i++) {
+            let found = false;
+            const cells = rows[i].getElementsByTagName('td');
+
+            for (let j = 0; j < cells.length; j++) {
+                const cell = cells[j];
+                const textValue = cell.textContent || cell.innerText;
+
+                if (textValue.toUpperCase().indexOf(filter) > -1) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (found) {
+                rows[i].style.display = '';
+            } else {
+                rows[i].style.display = 'none';
+            }
+        }
+    });
+</script>
 
 {% endblock %}
